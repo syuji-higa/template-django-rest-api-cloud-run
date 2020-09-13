@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+    web:
+        build: .
+        command: python manage.py runserver 0.0.0.0:8080
+        volumes:
+            - .:/code
+        ports:
+            - "8080:8080"
+        depends_on:
+            - db
+        environment:
+            DEBUG: "true"
+    db:
+        image: postgres
+        volumes:
+            - ./docker/db/init:/docker-entrypoint-initdb.d
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_DB=db_demo
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=admin
